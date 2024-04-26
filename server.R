@@ -95,4 +95,34 @@ server <- function(input, output, session) {
     #withProgress
     incProgress(0.8)
   })  
+  
+  #++++++++++++++++++++++++++++++++++++++
+  #Ranking: Table1
+  #++++++++++++++++++++++++++++++++++++++
+  
+  #DataTable
+  dfDT <- df %>%
+    dplyr::select(-pop_ageunknown_1980, -pop_ageunknown_2020) %>%
+    dplyr::select(id_muni2020, name_muni2020, pop_total_1980, pop_total_2020, ratio_pop_total, pop_age20_39_1980, pop_age20_39_2020, ratio_pop_age20_39) %>%
+    dplyr::rename(`市区町村コード` = id_muni2020) %>%
+    dplyr::rename(`市区町村名` = name_muni2020) %>%
+    dplyr::rename(`総女性人口変化率（1980-2020年）` = ratio_pop_total) %>%
+    dplyr::rename(`総女性人口（1980年）` = pop_total_1980) %>%
+    dplyr::rename(`総女性人口（2020年）` = pop_total_2020) %>%
+    dplyr::rename(`20-39歳女性人口変化率（1980-2020年）` = ratio_pop_age20_39) %>%
+    dplyr::rename(`20-39歳女性人口（1980年）` = pop_age20_39_1980) %>%
+    dplyr::rename(`20-39歳女性人口（2020年）` = pop_age20_39_2020)
+    
+  #DataTable
+  output$tableRatio <- renderDataTable({
+    DT::datatable(dfDT) %>%
+      DT::formatRound(columns = c(3, 4, 6, 7), digits = 0) %>%
+      DT::formatRound(columns = c(5, 8), digits = 2)
+    }, 
+    options = list(
+      autoWidth = TRUE, 
+      scrollX = TRUE
+    )
+  )
+
 }

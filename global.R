@@ -27,6 +27,7 @@ if(!require(leaflet)) install.packages("leaflet")
 if(!require(leaflet.mapboxgl)) install.packages("leaflet.mapboxgl")
 if(!require(sf)) install.packages("sf")
 if(!require(tidyverse)) install.packages("tidyverse")
+if(!require(DT)) install.packages("DT")
 
 #Dataframe
 df <- readr::read_csv("data/csv_pop/population_census_panel_1980_2020_female_age20_39.csv")

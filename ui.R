@@ -34,6 +34,10 @@ dashboardPage(
                        tabName = "tab_map1",
                        icon = icon("map")),
                      menuItem(
+                       "表",
+                       tabName = "tab_table1",
+                       icon = icon("table")),
+                     menuItem(
                        "はじめに",
                        tabName = "info",
                        icon = icon("info-circle"))
@@ -69,6 +73,22 @@ dashboardPage(
           style = "margin-top: -20px; margin-bottom: -20px;",
           leafletOutput("map1") %>%
             withSpinner(color = getOption("spinner.color", default = "#3C8EBC"))
+        )
+      ),
+      #++++++++++++++++++++++++++++++++++++++
+      tabItem(
+        tabName = "tab_table1",
+        fluidRow(
+          style = "margin-top: -20px; margin-bottom: -10px;",
+          column(
+            width = 12,
+            div(style = "margin-top: 10px")
+          ),
+          box(
+            width = 12,
+            dataTableOutput("tableRatio") %>%
+              withSpinner(color = getOption("spinner.color", default = "#3C8EBC"))
+          )
         )
       ),
       #++++++++++++++++++++++++++++++++++++++
