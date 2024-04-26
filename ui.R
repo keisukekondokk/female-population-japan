@@ -57,7 +57,7 @@ dashboardPage(
     ),
     tags$style(
       type = "text/css",
-      "#buttonMapUpdate {color: #FFFFFF;}"
+      ".leaflet-popup-content {font-size: large;}"
     ),
     #++++++++++++++++++++++++++++++++++++++
     #Tab
@@ -105,6 +105,7 @@ dashboardPage(
                 p("(c) 本サイトは、事前の予告なく変更、移転、削除等が行われることがあります。"),
                 #--------------------
                 h4("その他"),
+                p("ここに記載された見解や意見は近藤恵介個人のものであり、必ずしも近藤恵介が所属する組織の見解を反映するものではありません。"),
                 p("本コンテンツに関する問い合わせについて、下記のEmailより近藤恵介宛までご連絡ください。"),
                 p("Email: kondo-keisuke@rieti.go.jp"),
                 #------------------------------------------------------------------
@@ -147,7 +148,7 @@ dashboardPage(
                   .noWS = c("after-begin", "before-end")
                 ),
                 #------------------------------------------------------------------
-                h3(style = "border-bottom: solid 1px black;", span(icon("receipt"), "1980-2020年の比較について")),
+                h3(style = "border-bottom: solid 1px black;", span(icon("receipt"), "1980-2020年の人口比較について")),
                 h4("20-39歳女性人口変化率"),
                 p("人口戦略会議(2024)で提案された変数に対応して、昭和55年国勢調査と令和2年国勢調査の市区町村データを用いて、20-39歳女性人口の変化率(%)を地図上に可視化しています。"),
                 h4("市区町村パネルデータの作成方法"),
@@ -159,10 +160,12 @@ dashboardPage(
                 HTML(
                   "<ul>
                     <li>近藤恵介 (2019) 市町村合併を考慮した市区町村パネルデータの作成, RIETIテクニカルペーパー No. 19-T-001.<br>
-                    URL: <a href='https://www.rieti.go.jp/jp/publications/summary/19030013.html' target='_blank'>https://www.rieti.go.jp/jp/publications/summary/19030013.html</a></li>
+                    URL: <a href='https://www.rieti.go.jp/jp/publications/summary/19030013.html' target='_blank'>https://www.rieti.go.jp/jp/publications/summary/19030013.html</a>（2024年4月26日確認）</li>
+                    <li>人口戦略会議 (2024)「地方自治体「持続可能性」分析レポート」、<br>
+                    URL: <a href='https://www.hit-north.or.jp/information/2024/04/24/2171/' target='_blank'>https://www.hit-north.or.jp/information/2024/04/24/2171/</a>（2024年4月26日確認）</li>
                     <li>Kondo, Keisuke (2023) 
 Municipality-level Panel Data and Municipal Mergers in Japan, RIETI Technical Paper No. 23-T-001.<br>
-                    URL: <a href='https://www.rieti.go.jp/jp/publications/summary/23020001.html' target='_blank'>https://www.rieti.go.jp/jp/publications/summary/23020001.html</a></li>
+                    URL: <a href='https://www.rieti.go.jp/jp/publications/summary/23020001.html' target='_blank'>https://www.rieti.go.jp/jp/publications/summary/23020001.html</a>（2024年4月26日確認）</li>
                   </ul>"
                 ),              #------------------------------------------------------------------
                 h3(style = "border-bottom: solid 1px black;", span(icon("calendar"), "更新履歴")),

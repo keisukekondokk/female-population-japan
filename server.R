@@ -63,8 +63,13 @@ server <- function(input, output, session) {
           "<b>総女性人口(1980)：</b>　", sfMuni$pop_total_1980, "人 <br />",
           "<b>総女性人口(2020)：</b>　", sfMuni$pop_total_2020, "人 <br />"
         ),
-        popupOptions = list(maxWidth = 300, closeOnClick = TRUE),
+        popupOptions = list(maxWidth = 500, closeOnClick = TRUE),
         label = paste0(sfMuni$nameMuni),
+        labelOptions = labelOptions(
+          style = list(
+            "font-size" = "large"
+          )
+        ),
         group = "市区町村境界"
       ) %>%
       addPolygons(
