@@ -70,7 +70,7 @@ server <- function(input, output, session) {
             "font-size" = "large"
           )
         ),
-        group = "市区町村境界"
+        group = "20-39歳女性人口変化率"
       ) %>%
       addPolygons(
         data = sfPref,
@@ -87,7 +87,7 @@ server <- function(input, output, session) {
         title = "20-39歳女性人口変化率(%) <br /> (1980-2020年) <br /> ※括弧内の数値は自治体数"
       ) %>%
       addLayersControl(
-        overlayGroups = c("市区町村境界", "都道府県境界"),
+        overlayGroups = c("20-39歳女性人口変化率", "都道府県境界"),
         position = "topright",
         options = layersControlOptions(collapsed = TRUE)
       )
@@ -120,7 +120,8 @@ server <- function(input, output, session) {
         '20-39歳女性人口変化率<br />（1980-2020年）' = 'ratio_pop_age20_39', 
         '20-39歳女性人口<br />（1980年）' = 'pop_age20_39_1980', 
         '20-39歳女性人口<br />（2020年）' = 'pop_age20_39_2020'
-      )
+      ),
+      rownames = FALSE
     ) %>%
       DT::formatRound(columns = c(3, 4, 6, 7), digits = 0) %>%
       DT::formatRound(columns = c(5, 8), digits = 2)
@@ -141,7 +142,7 @@ server <- function(input, output, session) {
     valueBox(
       paste0(round(cntNumMuni_Positive)),
       "1980-2020年の過去40年間で20-39歳女性人口が増加した自治体数",
-      icon = icon("money-check"),
+      icon = icon("map"),
       color = "red"
     )
   })
@@ -151,7 +152,7 @@ server <- function(input, output, session) {
     valueBox(
       paste0(round(cntNumMuni_LessThan50)),
       "1980-2020年の過去40年間で20-39歳女性人口が半減した自治体数",
-      icon = icon("money-check"),
+      icon = icon("map"),
       color = "light-blue"
     )
   })

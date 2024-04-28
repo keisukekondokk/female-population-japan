@@ -57,7 +57,7 @@ dfFemale2020 <- dfTemp2020 %>%
   dplyr::mutate(code_muni = as.numeric(code_muni)) %>%
   dplyr::mutate(flag_drop = str_detect(name_muni, "（旧：.+）")) %>%
   dplyr::filter(flag_drop == 0) %>%
-  dplyr::mutate(pop_age20_39 = pop_age20_24 + pop_age25_29 + pop_age30_34 + pop_age35_39)
+  dplyr::mutate(pop_age20_39 = dplyr::select(., pop_age20_24, pop_age25_29, pop_age30_34, pop_age35_39) %>% rowSums(na.rm = TRUE))
 
 #2020年市区町村コードを追加
 dfFemaleTemp2020 <- dfFemale2020 %>%

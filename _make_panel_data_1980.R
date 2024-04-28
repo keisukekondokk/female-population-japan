@@ -30,6 +30,9 @@ dfTemp1980 <- df1980 %>%
   dplyr::rename(pop_age30_34 = `３０－３４歳【人】`) %>%
   dplyr::rename(pop_age35_39 = `３５－３９歳【人】`) %>%
   dplyr::rename(pop_ageunknown = `年齢不詳【人】`) %>%
+  dplyr::mutate(pop_ageunknown = if_else(pop_ageunknown == "-", NA_character_, pop_ageunknown)) %>%
+  dplyr::mutate(pop_ageunknown = if_else(pop_ageunknown == "***", NA_character_, pop_ageunknown)) %>%
+  dplyr::mutate(pop_ageunknown = as.numeric(pop_ageunknown)) %>%
   dplyr::select(year, cl_code_gender, cl_name_gender, code_muni, name_muni, starts_with("pop"))
 
 #変数追加
@@ -37,15 +40,12 @@ dfFemale1980 <- dfTemp1980 %>%
   dplyr::mutate(cl_code_gender = as.numeric(cl_code_gender))  %>%
   dplyr::filter(cl_code_gender == 2) %>%
   dplyr::mutate(code_muni = as.numeric(code_muni)) %>%
-  dplyr::mutate(pop_age20_39 = pop_age20_24 + pop_age25_29 + pop_age30_34 + pop_age35_39) %>%
-  dplyr::mutate(pop_ageunknown = str_replace_all(pop_ageunknown, ",", "")) %>%
-  dplyr::mutate(pop_ageunknown = if_else(pop_ageunknown == "***", NA_character_, pop_ageunknown)) %>%
-  dplyr::mutate(pop_ageunknown = as.numeric(pop_ageunknown))
+  dplyr::mutate(pop_age20_39 = dplyr::select(., pop_age20_24, pop_age25_29, pop_age30_34, pop_age35_39) %>% rowSums(na.rm = TRUE))
 
 #2020年市区町村コードを追加
 dfFemaleTemp1980 <- dfFemale1980 %>%
   dplyr::left_join(dfMuniConv, by = c("code_muni" = "merge_id_muni")) %>%
-  dplyr::filter(is.na(id_muni2020)==0)
+  dplyr::filter(is.na(id_muni2020) == 0)
 
 #2020年単位で再集計
 dfFemaleAgg1980 <- dfFemaleTemp1980 %>%
@@ -61,7 +61,4 @@ dfFemaleAgg1980 <- dfFemaleTemp1980 %>%
 
 #保存
 readr::write_csv(dfFemaleAgg1980, "data/csv_pop/population_census_1980_female_age20_39.csv")
-
-
-
 
