@@ -47,6 +47,16 @@ dashboardPage(
   #Body
   dashboardBody(
     tags$head(tags$link(rel = "shortcut icon", href = "favicon.ico")),
+    tags$head(
+      tags$meta(property="og:type", content="website"),
+      tags$meta(property="og:title", content="若年女性人口変化率1980-2020"),
+      tags$meta(property="og:description", content="1980-2020年の20-39歳女性人口の変化率を地図上に可視化しています。"),
+      tags$meta(property="og:url", content="https://keisuke-kondo.shinyapps.io/female-population-japan/"),
+      tags$meta(property="og:site_name", content="若年女性人口変化率1980-2020"),
+      tags$meta(property="og:image", content="https://github.com/keisukekondokk/female-population-japan/raw/main/www/female-population-japan.png"),
+      tags$meta(name="twitter:card", content="summary_large_image"),
+      tags$meta(name="twitter:site", content="@keisukekondokk")
+    ),
     tags$style(type = "text/css", "html, body {margin: 0; width: 100%; height: 100%;}"),
     tags$style(type = "text/css", "h2 {font-weight: bold; margin-top: 20px;}"),
     tags$style(type = "text/css", "h3 {font-weight: bold; margin-top: 15px;}"),
@@ -83,6 +93,16 @@ dashboardPage(
           column(
             width = 12,
             div(style = "margin-top: 10px")
+          ),
+          div(
+            style = "margin: 15px -5px -5px -5px;",
+            column(
+              width = 12,
+              offset = 0,
+              style="padding: 0px;",
+              valueBoxOutput("vBox1", width = 6),
+              valueBoxOutput("vBox2", width = 6)
+            ) 
           ),
           box(
             width = 12,
