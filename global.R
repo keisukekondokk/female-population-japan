@@ -32,3 +32,8 @@ if(!require(DT)) install.packages("DT")
 #Shapefile
 sfPref0 <- st_transform(read_sf(paste0("data/shp_pref/shp_poly_2005_pref00.shp"), crs = 4326))
 sfMuni0 <- st_transform(read_sf(paste0("data/shp_city/shp_poly_2020_pref00_city_seirei.shp"), crs = 4326))
+
+#Dataframe
+dfTotal <- readr::read_csv("data/csv_pop/population_census_panel_1980_2020_total_age20_39.csv")
+dfMale <- readr::read_csv("data/csv_pop/population_census_panel_1980_2020_male_age20_39.csv")
+dfFemale <- readr::read_csv("data/csv_pop/population_census_panel_1980_2020_female_age20_39.csv")

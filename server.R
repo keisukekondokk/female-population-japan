@@ -30,7 +30,7 @@ server <- function(input, output, session) {
       ) %>%
       setView(138.36834018134456, 38.01826932426196, zoom = 6)
   })
-
+  
   #LeafletProxy
   map1_proxy <- leafletProxy("map1", session)
 
@@ -48,9 +48,8 @@ server <- function(input, output, session) {
         #withProgress
         incProgress(0.2)
         
-        #SF Object
         #Dataframe
-        df <- readr::read_csv("data/csv_pop/population_census_panel_1980_2020_female_age20_39.csv")
+        df <- dfFemale
         
         #サマリー
         stat <- summary(df$ratio_pop_age20_39)
@@ -157,7 +156,7 @@ server <- function(input, output, session) {
           )
         
         #withProgress
-        incProgress(0.8)
+        incProgress(1.0)
       })
     }
     #---------------------------------------------------------------------------
@@ -173,7 +172,7 @@ server <- function(input, output, session) {
         
         #SF Object
         #Dataframe
-        df <- readr::read_csv("data/csv_pop/population_census_panel_1980_2020_male_age20_39.csv")
+        df <- dfMale
         
         #サマリー
         stat <- summary(df$ratio_pop_age20_39)
@@ -212,6 +211,10 @@ server <- function(input, output, session) {
         leg_color_val <- c("#000000", color_val)
         leg_breaks_label <- c(paste0("NA (", cntNumMuni_NA, ")"), breaks_label_legend)
         df_pal <- data.frame(color_value = leg_color_val, color_label = leg_breaks_label, stringsAsFactors = F)
+
+        #Shapefile
+        sfPref <- st_transform(read_sf(paste0("data/shp_pref/shp_poly_2005_pref00.shp"), crs = 4326))
+        sfMuni <- st_transform(read_sf(paste0("data/shp_city/shp_poly_2020_pref00_city_seirei.shp"), crs = 4326))
 
         #地図描画用Shapefile
         sfMuni <- sfMuni0 %>%
@@ -280,7 +283,7 @@ server <- function(input, output, session) {
           )
         
         #withProgress
-        incProgress(0.8)
+        incProgress(1.0)
       })
     }
     #---------------------------------------------------------------------------
@@ -295,7 +298,7 @@ server <- function(input, output, session) {
         incProgress(0.2)
         
         #Dataframe
-        df <- readr::read_csv("data/csv_pop/population_census_panel_1980_2020_total_age20_39.csv")
+        df <- dfTotal
         
         #サマリー
         stat <- summary(df$ratio_pop_total)
@@ -335,6 +338,10 @@ server <- function(input, output, session) {
         leg_breaks_label <- c(paste0("NA (", cntNumMuni_NA, ")"), breaks_label_legend)
         df_pal <- data.frame(color_value = leg_color_val, color_label = leg_breaks_label, stringsAsFactors = F)
 
+        #Shapefile
+        sfPref <- st_transform(read_sf(paste0("data/shp_pref/shp_poly_2005_pref00.shp"), crs = 4326))
+        sfMuni <- st_transform(read_sf(paste0("data/shp_city/shp_poly_2020_pref00_city_seirei.shp"), crs = 4326))
+        
         #地図描画用Shapefile
         sfMuni <- sfMuni0 %>%
           dplyr::left_join(df, by = c("codeMuni" = "id_muni2020") ) %>%
@@ -398,7 +405,7 @@ server <- function(input, output, session) {
           )
         
         #withProgress
-        incProgress(0.8)
+        incProgress(1.0)
       })
     }
     
@@ -407,9 +414,13 @@ server <- function(input, output, session) {
   #++++++++++++++++++++++++++++++++++++++
   #Ranking: Table1
   #++++++++++++++++++++++++++++++++++++++
+
+  #Stat Summary
+  cntNumMuni_Female_Positive <- sum(as.integer(dfFemale$ratio_pop_age20_39 >= 0), na.rm = TRUE)
+  cntNumMuni_Female_LessThan50 <- sum(as.integer(dfFemale$ratio_pop_age20_39 < -50), na.rm = TRUE)
   
   #DataTable
-  dfDT <- df %>%
+  dfDT <- dfFemale %>%
     dplyr::select(-pop_ageunknown_1980, -pop_ageunknown_2020) %>%
     dplyr::select(id_muni2020, name_muni2020, pop_total_1980, pop_total_2020, ratio_pop_total, pop_age20_39_1980, pop_age20_39_2020, ratio_pop_age20_39)
     
@@ -448,7 +459,7 @@ server <- function(input, output, session) {
   #valueBox
   output$vBox1 <- renderValueBox({
     valueBox(
-      paste0(round(cntNumMuni_Positive)),
+      paste0(round(cntNumMuni_Female_Positive)),
       "1980-2020年の過去40年間で20-39歳女性人口が増加した自治体数",
       icon = icon("map"),
       color = "red"
@@ -458,7 +469,7 @@ server <- function(input, output, session) {
   #valueBox
   output$vBox2 <- renderValueBox({
     valueBox(
-      paste0(round(cntNumMuni_LessThan50)),
+      paste0(round(cntNumMuni_Female_LessThan50)),
       "1980-2020年の過去40年間で20-39歳女性人口が半減した自治体数",
       icon = icon("map"),
       color = "light-blue"
