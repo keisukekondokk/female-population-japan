@@ -7,6 +7,7 @@
 
 #Packages
 library(tidyverse)
+library(writexl)
 
 #市区町村コンバータ
 dfTemp <- readr::read_csv("data/csv_municipality_converter/municipality_converter_jp.csv")
@@ -51,31 +52,47 @@ dfTemp2020 <- df2020 %>%
   dplyr::select(year, cl_code_gender, cl_name_gender, code_muni, name_muni, starts_with("pop"))
 
 #変数追加
-dfFemale2020 <- dfTemp2020 %>%
-  dplyr::mutate(cl_code_gender = as.numeric(cl_code_gender)) %>%
-  dplyr::filter(cl_code_gender == 2) %>%
-  dplyr::mutate(code_muni = as.numeric(code_muni)) %>%
-  dplyr::mutate(flag_drop = str_detect(name_muni, "（旧：.+）")) %>%
-  dplyr::filter(flag_drop == 0) %>%
-  dplyr::mutate(pop_age20_39 = dplyr::select(., pop_age20_24, pop_age25_29, pop_age30_34, pop_age35_39) %>% rowSums(na.rm = TRUE))
+listDf2020 <- lapply(0:2, function(x){
+  dfTemp2020 %>%
+    dplyr::mutate(cl_code_gender = as.numeric(cl_code_gender)) %>%
+    dplyr::filter(cl_code_gender == x) %>%
+    dplyr::mutate(code_muni = as.numeric(code_muni)) %>%
+    dplyr::mutate(flag_drop = str_detect(name_muni, "（旧：.+）")) %>%
+    dplyr::filter(flag_drop == 0) %>%
+    dplyr::mutate(pop_age20_39 = dplyr::select(., pop_age20_24, pop_age25_29, pop_age30_34, pop_age35_39) %>% rowSums(na.rm = TRUE)) %>%
+    dplyr::mutate(pop_age20_39 = if_else(pop_age20_39 == 0, NA_real_, pop_age20_39)) 
+})
+
 
 #2020年市区町村コードを追加
-dfFemaleTemp2020 <- dfFemale2020 %>%
-  dplyr::left_join(dfMuniConv, by = c("code_muni" = "merge_id_muni")) %>%
-  dplyr::filter(is.na(id_muni2020)==0)
+listDfTemp2020 <- lapply(1:3, function(x){
+  listDf2020[[x]] %>%
+    dplyr::left_join(dfMuniConv, by = c("code_muni" = "merge_id_muni")) %>%
+    dplyr::filter(is.na(id_muni2020) == 0)
+})
 
 #2020年単位で再集計
-dfFemaleAgg2020 <- dfFemaleTemp2020 %>%
-  dplyr::group_by(id_muni2020) %>%
-  dplyr::summarise(
-    year = first(year),
-    id_muni2020 = first(id_muni2020),
-    name_muni2020 = first(name_muni2020),
-    pop_total = sum(pop_total),
-    pop_age20_39 = sum(pop_age20_39),
-    pop_ageunknown = sum(pop_ageunknown)
-  )
-
+listDfAgg2020 <- lapply(1:3, function(x){
+  listDfTemp2020[[x]] %>%
+    dplyr::group_by(id_muni2020) %>%
+    dplyr::summarise(
+      year = first(year),
+      id_muni2020 = first(id_muni2020),
+      name_muni2020 = first(name_muni2020),
+      cl_code_gender = first(cl_code_gender), 
+      pop_total = sum(pop_total),
+      pop_age20_39 = sum(pop_age20_39),
+      pop_ageunknown = sum(pop_ageunknown)
+    )
+})
+  
 #保存
-readr::write_csv(dfFemaleAgg2020, "data/csv_pop/population_census_2020_female_age20_39.csv")
+readr::write_csv(listDfAgg2020[[1]], "data/csv_pop/population_census_2020_total_age20_39.csv")
+writexl::write_xlsx(listDfAgg2020[[1]], "data/csv_pop/population_census_2020_total_age20_39.xlsx")
+#保存
+readr::write_csv(listDfAgg2020[[2]], "data/csv_pop/population_census_2020_male_age20_39.csv")
+writexl::write_xlsx(listDfAgg2020[[2]], "data/csv_pop/population_census_2020_male_age20_39.xlsx")
+#保存
+readr::write_csv(listDfAgg2020[[3]], "data/csv_pop/population_census_2020_female_age20_39.csv")
+writexl::write_xlsx(listDfAgg2020[[3]], "data/csv_pop/population_census_2020_female_age20_39.xlsx")
 

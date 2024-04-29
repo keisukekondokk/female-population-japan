@@ -47,6 +47,25 @@ URL: https://keisukekondokk.github.io/
 本コンテンツに関する問い合わせについて、下記のEmailより近藤恵介宛までご連絡ください。  
 Email: kondo-keisuke@rieti.go.jp
 
+## Directory
+
+<pre>
+.
+├── data //データファイル格納ディレクトリ
+├── www //画像
+├── .gitignore
+├── LICENSE
+├── _make_panel_data.R //昭和55年国勢調査と令和2年国勢調査からパネルデータを作成
+├── _make_panel_data_1980.R //昭和55年国勢調査からデータセット作成
+├── _make_panel_data_2020.R //令和2年国勢調査からデータセット作成
+├── female-population-japan.Rproj
+├── ui.R //Shiny App
+├── global.R //Shiny App
+├── server.R //Shiny App
+└── README.md
+</pre>
+
+
 ## データ出所
 
 ### 令和2年国勢調査（e-Stat）：表番号2-7-1、男女，年齢（5歳階級），国籍総数か日本人別人口－全国，都道府県，市区町村（2000年（平成12年）市区町村含む）

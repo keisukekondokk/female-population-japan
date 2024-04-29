@@ -13,7 +13,7 @@ dashboardPage(
   #Header
   dashboardHeader(
     title = "若年女性人口変化率1980-2020",
-    titleWidth = 350,
+    titleWidth = 320,
     tags$li(
       actionLink(
         "github",
@@ -81,6 +81,29 @@ dashboardPage(
         tabName = "tab_map1",
         fluidRow(
           style = "margin-top: -20px; margin-bottom: -20px;",
+          absolutePanel(
+            id = "panel_map1",
+            class = "panel panel-default",
+            top = "15vh",
+            bottom = "auto",
+            left = "auto",
+            right = "auto",
+            width = 170,
+            height = "auto",
+            draggable = TRUE,
+            style = "z-index: 100;",
+            radioButtons(
+              "map1_button",
+              label = h4(span(icon("users"), "選択:")),
+              choices = list(
+                "20-39歳女性人口" = 1,
+                "20-39歳男性人口" = 2,
+                "全年齢総人口" = 3
+              ),
+              selected = 1,
+              width = "100%"
+            )
+          ),
           leafletOutput("map1") %>%
             withSpinner(color = getOption("spinner.color", default = "#3C8EBC"))
         )
