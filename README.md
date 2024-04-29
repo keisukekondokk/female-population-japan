@@ -47,7 +47,7 @@ URL: https://keisukekondokk.github.io/
 本コンテンツに関する問い合わせについて、下記のEmailより近藤恵介宛までご連絡ください。  
 Email: kondo-keisuke@rieti.go.jp
 
-## Directory
+## ディレクトリ
 
 <pre>
 .
@@ -64,6 +64,29 @@ Email: kondo-keisuke@rieti.go.jp
 ├── server.R //Shiny App
 └── README.md
 </pre>
+
+### パネルデータ
+
+#### CSV (UTF-8)
+- 全年齢総人口  
+URL: https://github.com/keisukekondokk/female-population-japan/blob/main/data/csv_pop/population_census_panel_1980_2020_total_age20_39.csv
+
+- 20-39歳男性人口  
+URL: https://github.com/keisukekondokk/female-population-japan/blob/main/data/csv_pop/population_census_panel_1980_2020_male_age20_39.csv
+
+- 20-39歳女性人口  
+URL: https://github.com/keisukekondokk/female-population-japan/blob/main/data/csv_pop/population_census_panel_1980_2020_female_age20_39.csv
+
+#### EXCEL
+- 全年齢総人口  
+URL: https://github.com/keisukekondokk/female-population-japan/blob/main/data/csv_pop/population_census_panel_1980_2020_total_age20_39.xlsx
+
+- 20-39歳男性人口  
+URL: https://github.com/keisukekondokk/female-population-japan/blob/main/data/csv_pop/population_census_panel_1980_2020_male_age20_39.xlsx
+
+- 20-39歳女性人口  
+URL: https://github.com/keisukekondokk/female-population-japan/blob/main/data/csv_pop/population_census_panel_1980_2020_female_age20_39.xlsx
+
 
 
 ## データ出所
